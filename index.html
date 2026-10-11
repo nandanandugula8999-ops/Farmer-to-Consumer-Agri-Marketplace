@@ -19,6 +19,7 @@
     <div class="container nav-wrap">
       <a href="#home" class="logo">🌱 Krishi<span>Market</span></a>
       <nav class="nav" id="mainNav">
+        <a href="#live">🔴 Live Rates</a>
         <a href="#shop">Shop</a>
         <a href="#farmers">Farmers</a>
         <a href="#how">How it Works</a>
@@ -60,7 +61,8 @@
       </div>
     </div>
     <div class="hero-card">
-      <div class="hero-img">🥬🍅🥛<br /><small>Harvested this morning • Mandya cluster</small></div>
+      <img class="hero-photo" src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80&auto=format&fit=crop" alt="Green paddy farm at sunrise in Karnataka" loading="eager" onerror="this.outerHTML='<div class=\'hero-img\'>🥬🍅🥛<br /><small>Harvested this morning • Mandya cluster</small></div>'" />
+      <div class="live-weather-pill" id="heroWeather">📍 Mandya: loading live weather…</div>
       <div class="mini-order">
         <h3>Today's Farm Box — ₹249</h3>
         <p>Tomato 1kg + Spinach 2 bunches + Milk 1L • from verified organic farms</p>
@@ -84,6 +86,36 @@
       <div>🔍 <b>Full traceability</b><br /><small>Farm, harvest date & method</small></div>
       <div>🌿 <b>Organic-first</b><br /><small>Verified sustainable practices</small></div>
       <div>⚡ <b>&lt;3 sec load</b><br /><small>Simple UI for rural + urban</small></div>
+    </div>
+  </section>
+
+  <!-- Live real-time data -->
+  <section class="container section" id="live">
+    <div class="sec-head">
+      <div>
+        <h2>🔴 Live: Mandi rates & farm weather</h2>
+        <p class="muted">Real-time via free public APIs — no key needed. Mandi: <a href="https://mandi-api.vercel.app/docs" target="_blank" rel="noopener">Mandi Price API</a> (Govt. data.gov.in Agmarknet, Karnataka) • Weather: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> (CC-BY 4.0)</p>
+      </div>
+      <button class="btn btn-outline" id="refreshLive">↻ Refresh live</button>
+    </div>
+    <div class="live-grid">
+      <div class="card">
+        <h3>🧺 Karnataka mandi rates <span class="badge green">LIVE</span></h3>
+        <small class="muted" id="mandiStamp">Connecting to mandi-api.onrender.com…</small>
+        <div class="table-wrap">
+          <table class="live-table">
+            <thead><tr><th>Commodity</th><th>Mandi</th><th>Modal</th><th>Min–Max</th><th>Date</th></tr></thead>
+            <tbody id="mandiBody"><tr><td colspan="5" class="muted">Loading live Karnataka prices…</td></tr></tbody>
+          </table>
+        </div>
+        <small class="muted">Wholesale ₹/quintal + approx ₹/kg. Retail Krishi Market price = fair farm-gate price. Full data: <a href="https://enam.gov.in/web/dashboard/agmarknet" target="_blank" rel="noopener">eNAM/Agmarknet</a></small>
+      </div>
+      <div class="card">
+        <h3>🌦️ Farm-cluster weather <span class="badge blue">LIVE</span></h3>
+        <small class="muted" id="weatherStamp">Connecting to api.open-meteo.com…</small>
+        <div class="weather-grid" id="weatherGrid"><p class="muted">Loading live weather for Mandya, Mysuru, Bengaluru, Tumakuru…</p></div>
+        <small class="muted">Sowing/harvest advisory updates with rain + heat. Source: Open-Meteo, attribution required.</small>
+      </div>
     </div>
   </section>
 
@@ -303,7 +335,7 @@
 
   <footer class="footer">
     <div class="container foot-grid">
-      <div><b>🌱 KrishiMarket</b><br /><small>Farmer-to-consumer • Fresh • Fair • Traceable<br />Stack: HTML/CSS/JS → React/Next + Node/Express + MongoDB/PostgreSQL → AWS/Vercel</small></div>
+      <div><b>🌱 KrishiMarket</b><br /><small>Farmer-to-consumer • Fresh • Fair • Traceable<br />Stack: HTML/CSS/JS → React/Next + Node/Express + MongoDB/PostgreSQL → AWS/Vercel<br />Live data: Mandi Price API (data.gov.in) • Open-Meteo (CC-BY 4.0) • Photos: Unsplash</small></div>
       <div><b>Market</b><br /><a href="#shop">Vegetables</a><br /><a href="#shop">Fruits</a><br /><a href="#shop">Dairy</a><br /><a href="#shop">Grains</a></div>
       <div><b>Company</b><br /><a href="#farmers">Farmers</a><br /><a href="#how">How it works</a><br /><a href="#dashboards">Dashboards</a></div>
       <div><b>Legal</b><br /><small>Secure auth • Privacy • Fair commission (5%)</small></div>
