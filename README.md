@@ -6,6 +6,7 @@ Direct farm-to-home platform: farmers earn more (no middlemen), consumers get fr
 ```
 krishi-market/
 ├── index.html
+├── images/           # self-hosted real veg photos (Wikimedia Commons, CC BY-SA — see footer)
 ├── css/style.css
 ├── js/app.js
 └── README.md
