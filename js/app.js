@@ -5,19 +5,19 @@
 
 // Real product photos (Unsplash, free to use)
 const PRODUCTS = [
-  { id:1, name:"Desi Tomato", category:"Vegetables", price:28, unit:"/ kg", avail:"120 kg", harvest:"2026-10-10", location:"Mandya", method:"Organic", farmer:"Ramesh Gowda", emoji:"🍅", img:"https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=600&q=80&auto=format&fit=crop" },
-  { id:2, name:"Spinach (Palak)", category:"Vegetables", price:20, unit:"/ bunch", avail:"200 bunches", harvest:"2026-10-11", location:"Mysuru", method:"Organic", farmer:"Lakshmi Devi", emoji:"🥬", img:"https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=600&q=80&auto=format&fit=crop" },
+  { id:1, name:"Desi Tomato", cimg:"https://thumb.wikimedia.org/wikipedia/commons/thumb/9/96/Tomato_pile.jpg/960px-Tomato_pile.jpg", category:"Vegetables", price:28, unit:"/ kg", avail:"120 kg", harvest:"2026-10-10", location:"Mandya", method:"Organic", farmer:"Ramesh Gowda", emoji:"🍅", img:"https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=600&q=80&auto=format&fit=crop" },
+  { id:2, name:"Spinach (Palak)", cimg:"https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fe/Spinach_leaves.jpg/960px-Spinach_leaves.jpg", category:"Vegetables", price:20, unit:"/ bunch", avail:"200 bunches", harvest:"2026-10-11", location:"Mysuru", method:"Organic", farmer:"Lakshmi Devi", emoji:"🥬", img:"https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=600&q=80&auto=format&fit=crop" },
   { id:3, name:"Alphonso Mango", category:"Fruits", price:180, unit:"/ kg", avail:"80 kg", harvest:"2026-10-09", location:"Bengaluru Rural", method:"Conventional", farmer:"Anand K.", emoji:"🥭", img:"https://images.unsplash.com/photo-1553279768-865429fa0078?w=600&q=80&auto=format&fit=crop" },
   { id:4, name:"A2 Desi Cow Milk", category:"Dairy", price:65, unit:"/ L", avail:"60 L/day", harvest:"Daily 5 AM", location:"Mandya", method:"Organic", farmer:"Ramesh Gowda", emoji:"🥛", img:"https://images.unsplash.com/photo-1550583724-b2692b85b150?w=600&q=80&auto=format&fit=crop" },
   { id:5, name:"Ragi (Finger Millet)", category:"Grains", price:52, unit:"/ kg", avail:"500 kg", harvest:"2026-09-28", location:"Tumakuru", method:"Organic", farmer:"Shobha R.", emoji:"🌾", img:"https://images.unsplash.com/photo-1586201375761-83865001e31c?w=600&q=80&auto=format&fit=crop" },
   { id:6, name:"Banana (Yelakki)", category:"Fruits", price:45, unit:"/ dozen", avail:"150 dozen", harvest:"2026-10-10", location:"Mysuru", method:"Conventional", farmer:"Fatima S.", emoji:"🍌", img:"https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=600&q=80&auto=format&fit=crop" },
   { id:7, name:"Country Eggs", category:"Dairy", price:90, unit:"/ dozen", avail:"90 dozen", harvest:"Daily", location:"Bengaluru Rural", method:"Organic", farmer:"Joseph D.", emoji:"🥚", img:"https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=600&q=80&auto=format&fit=crop" },
   { id:8, name:"Sona Masoori Rice", category:"Grains", price:68, unit:"/ kg", avail:"1 ton", harvest:"2026-09-15", location:"Mandya", method:"Conventional", farmer:"Ramesh Gowda", emoji:"🍚", img:"https://images.unsplash.com/photo-1536304993881-ff6e9eefa2a6?w=600&q=80&auto=format&fit=crop" },
-  { id:9, name:"Red Onion (Rose)", category:"Vegetables", price:32, unit:"/ kg", avail:"300 kg", harvest:"2026-10-08", location:"Mysuru", method:"Conventional", farmer:"Lakshmi Devi", emoji:"🧅", img:"https://images.unsplash.com/photo-1741517480859-cc010cff7e6a?w=600&q=80&auto=format&fit=crop" },
-  { id:10, name:"Potato (Jyoti)", category:"Vegetables", price:26, unit:"/ kg", avail:"400 kg", harvest:"2026-10-05", location:"Hassan", method:"Conventional", farmer:"Shobha R.", emoji:"🥔", img:"https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=600&q=80&auto=format&fit=crop" },
-  { id:11, name:"Ooty Carrot", category:"Vegetables", price:48, unit:"/ kg", avail:"150 kg", harvest:"2026-10-10", location:"Mysuru", method:"Organic", farmer:"Fatima S.", emoji:"🥕", img:"https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=600&q=80&auto=format&fit=crop" },
-  { id:12, name:"Green Beans", category:"Vegetables", price:56, unit:"/ kg", avail:"100 kg", harvest:"2026-10-11", location:"Bengaluru Rural", method:"Organic", farmer:"Joseph D.", emoji:"🫛", img:"https://images.unsplash.com/photo-1768734837711-1fcab086d826?w=600&q=80&auto=format&fit=crop" },
-  { id:13, name:"Brinjal (Violet Long)", category:"Vegetables", price:38, unit:"/ kg", avail:"180 kg", harvest:"2026-10-09", location:"Mandya", method:"Organic", farmer:"Ramesh Gowda", emoji:"🍆", img:"https://images.unsplash.com/photo-1528826007177-f38517ce9a8a?w=600&q=80&auto=format&fit=crop" },
+  { id:9, name:"Red Onion (Rose)", cimg:"https://thumb.wikimedia.org/wikipedia/commons/thumb/1/12/Pile_of_Onions_at_Barkin_Dogo_Market%2C_Kaduna_North_01.jpg/960px-Pile_of_Onions_at_Barkin_Dogo_Market%2C_Kaduna_North_01.jpg", category:"Vegetables", price:32, unit:"/ kg", avail:"300 kg", harvest:"2026-10-08", location:"Mysuru", method:"Conventional", farmer:"Lakshmi Devi", emoji:"🧅", img:"https://images.unsplash.com/photo-1741517480859-cc010cff7e6a?w=600&q=80&auto=format&fit=crop" },
+  { id:10, name:"Potato (Jyoti)", cimg:"https://thumb.wikimedia.org/wikipedia/commons/thumb/0/06/Irish_potatoes_01.jpg/960px-Irish_potatoes_01.jpg", category:"Vegetables", price:26, unit:"/ kg", avail:"400 kg", harvest:"2026-10-05", location:"Hassan", method:"Conventional", farmer:"Shobha R.", emoji:"🥔", img:"https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=600&q=80&auto=format&fit=crop" },
+  { id:11, name:"Ooty Carrot", cimg:"https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6f/Carrots_at_the_vegetable_market_place.jpg/960px-Carrots_at_the_vegetable_market_place.jpg", category:"Vegetables", price:48, unit:"/ kg", avail:"150 kg", harvest:"2026-10-10", location:"Mysuru", method:"Organic", farmer:"Fatima S.", emoji:"🥕", img:"https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=600&q=80&auto=format&fit=crop" },
+  { id:12, name:"Green Beans", cimg:"https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/26-04-2017%2C_French_beans_grown_in_Albufeira.JPG/960px-26-04-2017%2C_French_beans_grown_in_Albufeira.JPG", category:"Vegetables", price:56, unit:"/ kg", avail:"100 kg", harvest:"2026-10-11", location:"Bengaluru Rural", method:"Organic", farmer:"Joseph D.", emoji:"🫛", img:"https://images.unsplash.com/photo-1768734837711-1fcab086d826?w=600&q=80&auto=format&fit=crop" },
+  { id:13, name:"Brinjal (Violet Long)", cimg:"https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1f/Eggplant_Brinjal.jpg/960px-Eggplant_Brinjal.jpg", category:"Vegetables", price:38, unit:"/ kg", avail:"180 kg", harvest:"2026-10-09", location:"Mandya", method:"Organic", farmer:"Ramesh Gowda", emoji:"🍆", img:"https://images.unsplash.com/photo-1528826007177-f38517ce9a8a?w=600&q=80&auto=format&fit=crop" },
 ];
 
 const FARMERS = [
@@ -30,6 +30,11 @@ const FARMERS = [
 ];
 
 // ---------- Shop + farmers (now with real photos) ----------
+// Image fallback chain: Wikimedia close-up -> Unsplash backup -> emoji
+function imgErr(el, backup, emoji){
+  if(!el.dataset.fb){ el.dataset.fb="1"; el.src=backup; }
+  else { el.outerHTML='<div class="emoji">'+emoji+'</div>'; }
+}
 let cart = [];
 function renderProducts(){
   const c = document.getElementById('filterCategory').value;
@@ -44,7 +49,7 @@ function renderProducts(){
   );
   grid.innerHTML = list.length ? list.map(p=>`
     <div class="product">
-      <img class="product-img" src="${p.img}" alt="${p.name} — fresh from ${p.farmer}, ${p.location}" loading="lazy" onerror="this.outerHTML='<div class=&quot;emoji&quot;>${p.emoji}</div>'" />
+      <img class="product-img" src="${p.cimg||p.img}" alt="${p.name} — fresh from ${p.farmer}, ${p.location} (photo: Wikimedia Commons / Unsplash)" loading="lazy" onerror="imgErr(this,'${p.img}','${p.emoji}')" />
       <span class="tag ${p.method==='Organic'?'':'conv'}">${p.method} • ${p.category}</span>
       <h3>${p.name}</h3>
       <small>👨‍🌾 ${p.farmer} • 📍 ${p.location}</small>
