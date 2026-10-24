@@ -130,23 +130,31 @@ function queryProducts(q, pageSize) {
   pageSize = pageSize || 9;
   let items = PRODUCTS.slice();
 
-  if (q.q) {
-    const s = q.q.toLowerCase();
+  if (q.q && String(q.q).trim()) {
+    const s = String(q.q).trim().toLowerCase();
     items = items.filter((p) =>
-      p.name.toLowerCase().includes(s) ||
-      p.description.toLowerCase().includes(s) ||
-      p.farmerName.toLowerCase().includes(s)
+      (p.name && p.name.toLowerCase().includes(s)) ||
+      (p.description && p.description.toLowerCase().includes(s)) ||
+      (p.farmerName && p.farmerName.toLowerCase().includes(s)) ||
+      (p.origin && p.origin.toLowerCase().includes(s)) ||
+      (p.categoryName && p.categoryName.toLowerCase().includes(s))
     );
   }
   if (q.category) items = items.filter((p) => p.categorySlug === q.category);
-  if (q.location) {
-    const s = q.location.toLowerCase();
-    items = items.filter((p) => p.origin.toLowerCase().includes(s));
+  if (q.location && String(q.location).trim()) {
+    const s = String(q.location).trim().toLowerCase();
+    items = items.filter((p) => p.origin && p.origin.toLowerCase().includes(s));
   }
-  if (q.method) items = items.filter((p) => p.farmingMethod === q.method);
+  if (q.method && String(q.method).trim()) items = items.filter((p) => p.farmingMethod === q.method);
   if (q.availability === 'in_stock') items = items.filter((p) => p.availabilityStatus === 'in_stock');
-  if (q.priceMin) items = items.filter((p) => p.price >= Number(q.priceMin));
-  if (q.priceMax) items = items.filter((p) => p.price <= Number(q.priceMax));
+  if (q.priceMin !== '' && q.priceMin != null) {
+    const v = Number(q.priceMin);
+    if (!isNaN(v)) items = items.filter((p) => p.price >= v);
+  }
+  if (q.priceMax !== '' && q.priceMax != null) {
+    const v = Number(q.priceMax);
+    if (!isNaN(v)) items = items.filter((p) => p.price <= v);
+  }
 
   switch (q.sort) {
     case 'price_asc': items.sort((a, b) => a.price - b.price); break;

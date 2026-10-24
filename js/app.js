@@ -93,11 +93,11 @@ function reviewCard(r) {
 function paginationHTML(page, pages) {
   if (pages <= 1) return '';
   let html = '<div class="pagination">';
-  html += '<button data-goto="' + (page - 1) + '"' + (page <= 1 ? ' disabled' : '') + '>‹ Prev</button>';
+  html += '<button type="button" data-goto="' + (page - 1) + '"' + (page <= 1 ? ' disabled' : '') + '>‹ Prev</button>';
   for (let i = 1; i <= pages; i++) {
-    html += '<button data-goto="' + i + '"' + (i === page ? ' class="current"' : '') + '>' + i + '</button>';
+    html += '<button type="button" data-goto="' + i + '"' + (i === page ? ' class="current"' : '') + '>' + i + '</button>';
   }
-  html += '<button data-goto="' + (page + 1) + '"' + (page >= pages ? ' disabled' : '') + '>Next ›</button></div>';
+  html += '<button type="button" data-goto="' + (page + 1) + '"' + (page >= pages ? ' disabled' : '') + '>Next ›</button></div>';
   return html;
 }
 
@@ -453,7 +453,8 @@ function bindPageEvents(q, segments) {
     hero.addEventListener('submit', function (e) {
       e.preventDefault();
       const v = new FormData(hero).get('q');
-      location.hash = '#/shop' + (v ? '?q=' + encodeURIComponent(v) : '');
+      const s = (v || '').toString().trim();
+      location.hash = '#/shop' + (s ? '?q=' + encodeURIComponent(s) : '');
     });
   }
 
@@ -462,13 +463,20 @@ function bindPageEvents(q, segments) {
     shop.addEventListener('submit', function (e) {
       e.preventDefault();
       const params = new URLSearchParams();
-      new FormData(shop).forEach(function (v, k) { if (v) params.set(k, v); });
+      new FormData(shop).forEach(function (v, k) {
+        if (v == null) return;
+        const val = String(v).trim();
+        if (val) params.set(k, val);
+      });
       const s = params.toString();
       location.hash = '#/shop' + (s ? '?' + s : '');
     });
     shop.querySelectorAll('button[data-goto]').forEach(function (b) {
-      b.addEventListener('click', function () {
-        const params = new URLSearchParams(location.hash.split('?')[1] || '');
+      b.addEventListener('click', function (e) {
+        e.preventDefault();
+        const hash = location.hash;
+        const qpart = hash.indexOf('?') >= 0 ? hash.split('?')[1] : '';
+        const params = new URLSearchParams(qpart);
         params.set('page', b.dataset.goto);
         location.hash = '#/shop?' + params.toString();
       });
@@ -480,7 +488,11 @@ function bindPageEvents(q, segments) {
     farmers.addEventListener('submit', function (e) {
       e.preventDefault();
       const params = new URLSearchParams();
-      new FormData(farmers).forEach(function (v, k) { if (v) params.set(k, v); });
+      new FormData(farmers).forEach(function (v, k) {
+        if (v == null) return;
+        const val = String(v).trim();
+        if (val) params.set(k, val);
+      });
       const s = params.toString();
       location.hash = '#/farmers' + (s ? '?' + s : '');
     });
