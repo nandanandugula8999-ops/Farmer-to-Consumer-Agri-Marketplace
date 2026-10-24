@@ -7,7 +7,7 @@ const CATEGORIES = [
   { _id: 'c2', name: 'Fruits', slug: 'fruits', description: 'Naturally ripened local fruits', image: 'images/brinjal.jpg' },
   { _id: 'c3', name: 'Dairy Products', slug: 'dairy-products', description: 'Milk, curd, ghee and more', image: 'images/green-beans.jpg' },
   { _id: 'c4', name: 'Grains & Pulses', slug: 'grains-pulses', description: 'Rice, ragi, wheat and dals', image: '' },
-  { _id: 'c5', name: 'Organic Products', slug: 'organic-products', description: 'Certified organic produce', image: '' },
+  { _id: 'c5', name: 'Organic Products', slug: 'organic-products', description: 'Certified organic produce', image: 'images/spinach-leaves.jpg' },
   { _id: 'c6', name: 'Herbs & Other Produce', slug: 'herbs-other-produce', description: 'Fresh herbs and other farm goods', image: '' },
 ];
 
@@ -91,8 +91,12 @@ const PRODUCTS = [
   makeProduct('p11', 3, 'Ooty Carrot', 'c1', 'vegetables', 'Vegetables', 48, 'kg', 150, 'Organic', 'images/carrots-market.jpg', 1, 175, 4.7, 30),
   makeProduct('p12', 4, 'Green Beans', 'c1', 'vegetables', 'Vegetables', 56, 'kg', 100, 'Organic', 'images/green-beans.jpg', 1, 130, 4.6, 19),
   makeProduct('p13', 0, 'Brinjal (Violet Long)', 'c1', 'vegetables', 'Vegetables', 38, 'kg', 180, 'Organic', 'images/brinjal.jpg', 2, 110, 4.4, 16),
-  makeProduct('p14', 1, 'Curry Leaves', 'c6', 'herbs-other-produce', 'Herbs & Other Produce', 10, 'bunch', 300, 'Organic', '', 1, 95, 4.5, 9),
+  makeProduct('p14', 1, 'Curry Leaves', 'c6', 'herbs-other-produce', 'Herbs & Other Produce', 10, 'bunch', 300, 'Organic', 'images/spinach-leaves.jpg', 1, 95, 4.5, 9),
   makeProduct('p15', 2, 'Papaya (Red)', 'c2', 'fruits', 'Fruits', 40, 'kg', 0, 'Conventional', 'images/carrots-market.jpg', 3, 60, 4.2, 8),
+  makeProduct('p16', 0, 'Organic Ragi Flour', 'c5', 'organic-products', 'Organic Products', 78, 'kg', 200, 'Organic', 'images/potatoes-closeup.jpg', 15, 120, 4.7, 16),
+  makeProduct('p17', 1, 'Organic Spinach Seeds Pack', 'c5', 'organic-products', 'Organic Products', 95, 'pack', 150, 'Organic', 'images/spinach-leaves.jpg', 30, 80, 4.8, 12),
+  makeProduct('p18', 4, 'Organic A2 Ghee', 'c5', 'organic-products', 'Organic Products', 850, '500ml', 50, 'Organic', 'images/green-beans.jpg', 5, 165, 4.9, 28),
+  makeProduct('p19', 3, 'Organic Mango Jam', 'c5', 'organic-products', 'Organic Products', 145, 'jar', 80, 'Organic', 'images/brinjal.jpg', 10, 90, 4.6, 14),
 ];
 
 const REVIEWS = [
