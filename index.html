@@ -4,347 +4,79 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Krishi Market — Farmer-to-Consumer Agri Marketplace</title>
-  <meta name="description" content="Krishi Market directly connects local farmers with consumers. Fresh, traceable produce at fair prices." />
+  <meta name="description" content="Krishi Market — a farmer-to-consumer agricultural marketplace. Fresh, traceable produce at fair prices." />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-  <link rel="apple-touch-icon" href="favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <!-- Top bar -->
-  <div class="topbar">
-    <span>🌾 Direct from farm • No middlemen • 100% traceable</span>
-    <span class="topbar-right">Support: care@krishimarket.in | Kannada / English / Hindi</span>
-  </div>
-
-  <!-- Header -->
-  <header class="header">
-    <div class="container nav-wrap">
-      <a href="#home" class="logo">🌱 Krishi<span>Market</span></a>
-      <nav class="nav" id="mainNav">
-        <a href="#live">🔴 Live Rates</a>
-        <a href="#shop">Shop</a>
-        <a href="#farmers">Farmers</a>
-        <a href="#how">How it Works</a>
-        <a href="#dashboards">Dashboards</a>
-        <a href="#join">Join as Farmer</a>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="#/" class="brand">
+        <span class="brand-icon">🌱</span>
+        Krishi<span class="brand-accent">Market</span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">☰</button>
+      <nav class="main-nav" id="mainNav">
+        <a href="#/" data-nav="home">Home</a>
+        <a href="#/shop" data-nav="shop">Shop</a>
+        <a href="#/categories" data-nav="categories">Categories</a>
+        <a href="#/farmers" data-nav="farmers">Our Farmers</a>
+        <a href="#/how-it-works" data-nav="how">How It Works</a>
+        <a href="#/about" data-nav="about">About</a>
+        <a href="#/contact" data-nav="contact">Contact</a>
       </nav>
-      <div class="header-actions">
-        <button class="icon-btn" id="cartBtn" aria-label="Cart">🛒 <span id="cartCount">0</span></button>
-        <a href="#join" class="btn btn-outline hide-mobile">Login</a>
-        <a href="#shop" class="btn btn-primary">Shop Fresh</a>
-        <button class="menu-btn" id="menuBtn" aria-label="Menu">☰</button>
-      </div>
     </div>
   </header>
 
-  <!-- Hero -->
-  <section class="hero container" id="home">
-    <div class="hero-text">
-      <div class="pill">✅ Primary Objective: Direct farmer-to-consumer sales</div>
-      <h1>Fresh from <span class="green">local farms</span>,<br />fair for farmers.</h1>
-      <p>Traditional supply chains cut farmer income and raise your prices. Krishi Market removes intermediaries — farmers earn more, you get fresher, traceable produce.</p>
-      <div class="hero-search">
-        <input type="search" id="heroSearch" placeholder="Search tomatoes, milk, mangoes, ragi..." />
-        <select id="heroLocation">
-          <option value="">All Locations</option>
-          <option>Mandya</option>
-          <option>Mysuru</option>
-          <option>Bengaluru Rural</option>
-          <option>Tumakuru</option>
-          <option>Hassan</option>
-        </select>
-        <button class="btn btn-primary" onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">Search</button>
-      </div>
-      <div class="hero-stats">
-        <div><strong>500+</strong><span>Farmers onboarded</span></div>
-        <div><strong>12k+</strong><span>Active consumers</span></div>
-        <div><strong>96%</strong><span>Order fulfilment</span></div>
-        <div><strong>+38%</strong><span>Avg. farmer income ↑</span></div>
-      </div>
-    </div>
-    <div class="hero-card">
-      <img class="hero-photo" src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80&auto=format&fit=crop" alt="Green paddy farm at sunrise in Karnataka" loading="eager" onerror="this.outerHTML='<div class=\'hero-img\'>🥬🍅🥛<br /><small>Harvested this morning • Mandya cluster</small></div>'" />
-      <div class="live-weather-pill" id="heroWeather">📍 Mandya: loading live weather…</div>
-      <div class="mini-order">
-        <h3>Today's Farm Box — ₹249</h3>
-        <p>Tomato 1kg + Spinach 2 bunches + Milk 1L • from verified organic farms</p>
-        <div class="row">
-          <select id="slotSelect">
-            <option>Delivery: Today 4–7 PM</option>
-            <option>Delivery: Tomorrow 7–10 AM</option>
-            <option>Delivery: Tomorrow 4–7 PM</option>
-          </select>
-          <button class="btn btn-primary" id="quickAdd">Add Box</button>
-        </div>
-        <small class="muted">✔ Traceable • ✔ Fair price • ✔ Next-day harvest</small>
-      </div>
-    </div>
-  </section>
+  <main id="app" class="site-main"></main>
 
-  <!-- Trust strip -->
-  <section class="strip">
-    <div class="container strip-grid">
-      <div>🚜 <b>No middlemen</b><br /><small>Farmers set their own price</small></div>
-      <div>🔍 <b>Full traceability</b><br /><small>Farm, harvest date & method</small></div>
-      <div>🌿 <b>Organic-first</b><br /><small>Verified sustainable practices</small></div>
-      <div>⚡ <b>&lt;3 sec load</b><br /><small>Simple UI for rural + urban</small></div>
-    </div>
-  </section>
-
-  <!-- Live real-time data -->
-  <section class="container section" id="live">
-    <div class="sec-head">
+  <footer class="site-footer">
+    <div class="container footer-grid">
       <div>
-        <h2>🔴 Live: Mandi rates & farm weather</h2>
-        <p class="muted">Real-time via free public APIs — no key needed. Mandi: <a href="https://mandi-api.vercel.app/docs" target="_blank" rel="noopener">Mandi Price API</a> (Govt. data.gov.in Agmarknet, Karnataka) • Weather: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> (CC-BY 4.0)</p>
+        <div class="footer-brand"><span class="brand-icon">🌱</span> Krishi Market</div>
+        <p class="footer-text">
+          A farmer-to-consumer marketplace connecting local producers directly with customers.
+          Fresh, traceable, fairly priced.
+        </p>
       </div>
-      <button class="btn btn-outline" id="refreshLive">↻ Refresh live</button>
-    </div>
-    <div class="live-grid">
-      <div class="card">
-        <h3>🧺 Karnataka mandi rates <span class="badge green">LIVE</span></h3>
-        <small class="muted" id="mandiStamp">Connecting to mandi-api.onrender.com…</small>
-        <div class="table-wrap">
-          <table class="live-table">
-            <thead><tr><th>Commodity</th><th>Mandi</th><th>Modal</th><th>Min–Max</th><th>Date</th></tr></thead>
-            <tbody id="mandiBody"><tr><td colspan="5" class="muted">Loading live Karnataka prices…</td></tr></tbody>
-          </table>
-        </div>
-        <small class="muted">Wholesale ₹/quintal + approx ₹/kg. Retail Krishi Market price = fair farm-gate price. Full data: <a href="https://enam.gov.in/web/dashboard/agmarknet" target="_blank" rel="noopener">eNAM/Agmarknet</a></small>
-      </div>
-      <div class="card">
-        <h3>🌦️ Farm-cluster weather <span class="badge blue">LIVE</span></h3>
-        <small class="muted" id="weatherStamp">Connecting to api.open-meteo.com…</small>
-        <div class="weather-grid" id="weatherGrid"><p class="muted">Loading live weather for Mandya, Mysuru, Bengaluru, Tumakuru…</p></div>
-        <small class="muted">Sowing/harvest advisory updates with rain + heat. Source: Open-Meteo, attribution required.</small>
-      </div>
-    </div>
-  </section>
-
-  <!-- Shop -->
-  <section class="container section" id="shop">
-    <div class="sec-head">
       <div>
-        <h2>Browse fresh produce</h2>
-        <p class="muted">Filter by category, location, farmer, organic / non-organic.</p>
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="#/shop?category=vegetables">Vegetables</a></li>
+          <li><a href="#/shop?category=fruits">Fruits</a></li>
+          <li><a href="#/shop?category=dairy-products">Dairy Products</a></li>
+          <li><a href="#/shop?category=grains-pulses">Grains &amp; Pulses</a></li>
+        </ul>
       </div>
-      <div class="filters">
-        <select id="filterCategory">
-          <option value="">All Categories</option>
-          <option>Vegetables</option>
-          <option>Fruits</option>
-          <option>Dairy</option>
-          <option>Grains</option>
-        </select>
-        <select id="filterLocation">
-          <option value="">All Locations</option>
-          <option>Mandya</option>
-          <option>Mysuru</option>
-          <option>Bengaluru Rural</option>
-          <option>Tumakuru</option>
-        </select>
-        <select id="filterMethod">
-          <option value="">Organic + Conventional</option>
-          <option>Organic</option>
-          <option>Conventional</option>
-        </select>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#/about">About Us</a></li>
+          <li><a href="#/how-it-works">How It Works</a></li>
+          <li><a href="#/farmers">Our Farmers</a></li>
+          <li><a href="#/faq">Help &amp; FAQs</a></li>
+          <li><a href="#/contact">Contact</a></li>
+        </ul>
       </div>
-    </div>
-    <div class="product-grid" id="productGrid"></div>
-  </section>
-
-  <!-- Farmers -->
-  <section class="container section" id="farmers">
-    <h2>Meet verified farmers</h2>
-    <p class="muted">Farm location • Crop types • Farming method • Verification status</p>
-    <div class="farmer-grid" id="farmerGrid"></div>
-  </section>
-
-  <!-- How it works -->
-  <section class="how section" id="how">
-    <div class="container">
-      <h2>User flow — farm to doorstep in 6 steps</h2>
-      <div class="steps">
-        <div class="step"><span>1</span><b>Farmer registers & lists</b><small>Profile + crop, price, availability, harvest date</small></div>
-        <div class="step"><span>2</span><b>Consumer browses</b><small>By category, location, farmer, organic tag</small></div>
-        <div class="step"><span>3</span><b>Order + slot</b><small>Cart, delivery slot, basic checkout</small></div>
-        <div class="step"><span>4</span><b>Farmer confirms</b><small>Accept / update order status</small></div>
-        <div class="step"><span>5</span><b>Delivery arranged</b><small>Local partner + tracking</small></div>
-        <div class="step"><span>6</span><b>Receive & rate</b><small>Rate product + farmer, build trust</small></div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li>support@krishimarket.example</li>
+          <li>Bengaluru, Karnataka, India</li>
+        </ul>
       </div>
     </div>
-  </section>
-
-  <!-- Dashboards -->
-  <section class="container section" id="dashboards">
-    <h2>Farmer, Consumer & Admin dashboards</h2>
-    <p class="muted">Base UI preview — wire to Node.js + Express REST APIs + MongoDB/PostgreSQL in production.</p>
-    <div class="tabs">
-      <button class="tab active" data-tab="farmerTab">🚜 Farmer</button>
-      <button class="tab" data-tab="consumerTab">🛍️ Consumer</button>
-      <button class="tab" data-tab="adminTab">🛡️ Admin</button>
-    </div>
-
-    <div class="tab-panel active" id="farmerTab">
-      <div class="dash-grid">
-        <div class="card">
-          <h3>Sales summary</h3>
-          <div class="kpi-row">
-            <div><strong>₹18,450</strong><small>This month</small></div>
-            <div><strong>132</strong><small>Orders</small></div>
-            <div><strong>4.8★</strong><small>Rating</small></div>
-          </div>
-          <div class="bar"><div style="width:72%"></div></div>
-          <small class="muted">+38% vs mandi sales • fulfilment 97%</small>
-        </div>
-        <div class="card">
-          <h3>Orders to fulfil</h3>
-          <ul class="order-list" id="farmerOrders">
-            <li><b>#KM-2041</b> — Tomato 5kg — Mysuru — <span class="badge yellow">Pending</span> <button class="link" onclick="updateOrder(this)">Confirm</button></li>
-            <li><b>#KM-2040</b> — Milk 10L — Mandya — <span class="badge green">Confirmed</span></li>
-            <li><b>#KM-2039</b> — Ragi 25kg — Tumakuru — <span class="badge blue">Out for delivery</span></li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>Add product listing</h3>
-          <form id="productForm" class="form">
-            <input required placeholder="Product name (e.g. Drumstick)" />
-            <div class="row2">
-              <select><option>Vegetables</option><option>Fruits</option><option>Dairy</option><option>Grains</option></select>
-              <input required type="number" min="1" placeholder="₹ / unit" />
-            </div>
-            <div class="row2">
-              <input type="date" title="Harvest date" />
-              <input placeholder="Availability (e.g. 50 kg)" />
-            </div>
-            <button class="btn btn-primary" type="submit">Publish listing</button>
-          </form>
-        </div>
+    <div class="footer-bottom">
+      <div class="container">
+        © <span id="year"></span> Krishi Market. Demonstration project.
       </div>
     </div>
-
-    <div class="tab-panel" id="consumerTab">
-      <div class="dash-grid">
-        <div class="card">
-          <h3>My orders & tracking</h3>
-          <ul class="order-list">
-            <li><b>#KM-1988</b> — Farm Box — <span class="badge blue">Out for delivery</span><br /><small>Slot: Today 4–7 PM • Farmer: Ramesh Gowda</small></li>
-            <li><b>#KM-1975</b> — A2 Milk 5L — <span class="badge green">Delivered</span> <button class="link">Rate ★★★★★</button></li>
-          </ul>
-          <div class="track">
-            <div class="dot done"></div><div class="line done"></div>
-            <div class="dot done"></div><div class="line done"></div>
-            <div class="dot active"></div><div class="line"></div><div class="dot"></div>
-          </div>
-          <small class="muted">Placed → Confirmed → Out for delivery → Delivered</small>
-        </div>
-        <div class="card">
-          <h3>Rate farmers</h3>
-          <p>⭐⭐⭐⭐⭐ “Milk was fresh, harvest date mentioned. Fair price.”</p>
-          <div class="stars" id="rateStars">★ ★ ★ ★ ★</div>
-          <small class="muted">Your ratings build transparency & trust.</small>
-        </div>
-        <div class="card">
-          <h3>Order history</h3>
-          <p><b>14 orders</b> • 68% repeat rate • ₹3,200 saved vs retail</p>
-          <button class="btn btn-outline" onclick="alert('Demo: full history comes from /api/orders in backend')">View history</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="tab-panel" id="adminTab">
-      <div class="dash-grid">
-        <div class="card">
-          <h3>Pending farmer approvals <span class="badge yellow">3</span></h3>
-          <ul class="order-list">
-            <li>Shobha R. — Hassan — Organic — <button class="link" onclick="approveFarmer(this)">Approve</button></li>
-            <li>Anand K. — Kolar — Conventional — <button class="link" onclick="approveFarmer(this)">Approve</button></li>
-            <li>Fatima S. — Mysuru — Organic — <button class="link" onclick="approveFarmer(this)">Approve</button></li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>Platform analytics</h3>
-          <div class="kpi-row">
-            <div><strong>512</strong><small>Farmers</small></div>
-            <div><strong>12.4k</strong><small>Consumers</small></div>
-            <div><strong>96%</strong><small>Fulfilment</small></div>
-          </div>
-          <div class="bar"><div style="width:64%"></div></div>
-          <small class="muted">Commissions (5%) • disputes: 4 open • multi-region ready</small>
-        </div>
-        <div class="card">
-          <h3>Categories & commissions</h3>
-          <p class="muted">Vegetables • Fruits • Dairy • Grains • Organic</p>
-          <label class="muted">Commission % <input type="number" value="5" min="0" max="20" style="width:70px" /></label><br /><br />
-          <button class="btn btn-primary" onclick="alert('Demo: saved. Wire to /api/admin/settings')">Save settings</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Join / Auth -->
-  <section class="container section join" id="join">
-    <div class="card">
-      <h2>🚜 Farmer registration & verification</h2>
-      <form id="farmerForm" class="form">
-        <input required placeholder="Farmer name" />
-        <input required placeholder="Farm location (village, district)" />
-        <div class="row2">
-          <input placeholder="Crop types (e.g. tomato, ragi, mango)" />
-          <select><option>Organic</option><option>Conventional</option><option>Natural / ZBNF</option></select>
-        </div>
-        <input placeholder="Phone / UPI for payouts" />
-        <button class="btn btn-primary" type="submit">Submit for verification</button>
-        <small class="muted">Admin approves within 24–48h. Status: Pending → Verified</small>
-      </form>
-    </div>
-    <div class="card">
-      <h2>🛍️ Consumer login & order</h2>
-      <form id="consumerForm" class="form">
-        <input required type="tel" placeholder="Mobile number (OTP login)" />
-        <div class="row2">
-          <select id="orderSlot">
-            <option>Today 4–7 PM</option>
-            <option>Tomorrow 7–10 AM</option>
-            <option>Tomorrow 4–7 PM</option>
-          </select>
-          <input placeholder="Pincode" />
-        </div>
-        <button class="btn btn-dark" type="submit">Login & Checkout (<span id="cartTotalMini">₹0</span>)</button>
-        <small class="muted">Secure auth • data protection • simple UI for all literacy levels</small>
-      </form>
-      <div class="cart-box">
-        <h3>🧺 Cart (<span id="cartCount2">0</span>) — <span id="cartTotal">₹0</span></h3>
-        <ul id="cartItems" class="order-list"><li class="muted">Cart is empty. Add fresh produce above.</li></ul>
-        <button class="btn btn-outline" id="clearCart">Clear cart</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- KPIs / Impact -->
-  <section class="impact section">
-    <div class="container">
-      <h2>Expected impact & KPIs we track</h2>
-      <div class="kpi-grid">
-        <div><b>↑ Farmer income</b><small>Direct sales, no commission shock</small></div>
-        <div><b>↓ Food wastage</b><small>Harvest-to-order, local slots</small></div>
-        <div><b>✔ Transparency</b><small>Harvest date, farm, method on every pack</small></div>
-        <div><b>🏘️ Local systems</b><small>Seasonal, multi-region expansion ready</small></div>
-      </div>
-      <p class="muted">Future: mobile apps • online payments & subscriptions • cold-chain • AI price suggestions • govt. scheme integration.</p>
-    </div>
-  </section>
-
-  <footer class="footer">
-    <div class="container foot-grid">
-      <div><b>🌱 KrishiMarket</b><br /><small>Farmer-to-consumer • Fresh • Fair • Traceable<br />Stack: HTML/CSS/JS → React/Next + Node/Express + MongoDB/PostgreSQL → AWS/Vercel<br />Live data: Mandi Price API (data.gov.in) • Open-Meteo (CC-BY 4.0) • Produce photos: <a href="https://commons.wikimedia.org" target="_blank" rel="noopener" style="color:#fff">Wikimedia Commons contributors (CC BY-SA)</a> + Unsplash</small></div>
-      <div><b>Market</b><br /><a href="#shop">Vegetables</a><br /><a href="#shop">Fruits</a><br /><a href="#shop">Dairy</a><br /><a href="#shop">Grains</a></div>
-      <div><b>Company</b><br /><a href="#farmers">Farmers</a><br /><a href="#how">How it works</a><br /><a href="#dashboards">Dashboards</a></div>
-      <div><b>Legal</b><br /><small>Secure auth • Privacy • Fair commission (5%)</small></div>
-    </div>
-    <div class="copy">© 2026 Krishi Market • Base build for demo</div>
   </footer>
 
+  <script src="js/data.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
