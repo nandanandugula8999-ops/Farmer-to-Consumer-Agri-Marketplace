@@ -4,11 +4,11 @@ const daysAgo = (n) => new Date(Date.now() - n * 24 * 60 * 60 * 1000).toISOStrin
 
 const CATEGORIES = [
   { _id: 'c1', name: 'Vegetables', slug: 'vegetables', description: 'Farm-fresh seasonal vegetables', image: 'images/tomato-pile.jpg' },
-  { _id: 'c2', name: 'Fruits', slug: 'fruits', description: 'Naturally ripened local fruits', image: 'images/brinjal.jpg' },
-  { _id: 'c3', name: 'Dairy Products', slug: 'dairy-products', description: 'Milk, curd, ghee and more', image: 'images/green-beans.jpg' },
-  { _id: 'c4', name: 'Grains & Pulses', slug: 'grains-pulses', description: 'Rice, ragi, wheat and dals', image: '' },
-  { _id: 'c5', name: 'Organic Products', slug: 'organic-products', description: 'Certified organic produce', image: 'images/spinach-leaves.jpg' },
-  { _id: 'c6', name: 'Herbs & Other Produce', slug: 'herbs-other-produce', description: 'Fresh herbs and other farm goods', image: '' },
+  { _id: 'c2', name: 'Fruits', slug: 'fruits', description: 'Naturally ripened local fruits', image: 'images/mango.jpg' },
+  { _id: 'c3', name: 'Dairy Products', slug: 'dairy-products', description: 'Milk, curd, ghee and more', image: 'images/milk.jpg' },
+  { _id: 'c4', name: 'Grains & Pulses', slug: 'grains-pulses', description: 'Rice, ragi, wheat and dals', image: 'images/rice-bowl.jpg' },
+  { _id: 'c5', name: 'Organic Products', slug: 'organic-products', description: 'Certified organic produce', image: 'images/organic-ragi-flour.jpg' },
+  { _id: 'c6', name: 'Herbs & Other Produce', slug: 'herbs-other-produce', description: 'Fresh herbs and other farm goods', image: 'images/curry-leaves.jpg' },
 ];
 
 const FARMERS = [
@@ -30,7 +30,7 @@ const FARMERS = [
     id: 'f3', farmerName: 'Anand K.', farmName: 'Anand Orchards',
     farmDescription: 'Orchard farm growing Alphonso mangoes and Yelakki bananas.',
     village: 'Mulbagal', district: 'Kolar', state: 'Karnataka',
-    cropTypes: ['Mango', 'Banana'], farmingMethod: 'Conventional', farmImage: 'images/brinjal.jpg',
+    cropTypes: ['Mango', 'Banana'], farmingMethod: 'Conventional', farmImage: 'images/mango.jpg',
     ratingAvg: 4.5, ratingCount: 12,
   },
   {
@@ -44,7 +44,7 @@ const FARMERS = [
     id: 'f5', farmerName: 'Joseph D.', farmName: 'Joseph Dairy & Poultry',
     farmDescription: 'Dairy and poultry farm supplying fresh milk and country eggs.',
     village: 'Devanahalli', district: 'Bengaluru Rural', state: 'Karnataka',
-    cropTypes: ['Dairy', 'Poultry', 'Beans'], farmingMethod: 'Organic', farmImage: 'images/green-beans.jpg',
+    cropTypes: ['Dairy', 'Poultry', 'Beans'], farmingMethod: 'Organic', farmImage: 'images/milk.jpg',
     ratingAvg: 4.9, ratingCount: 31,
   },
 ];
@@ -80,23 +80,23 @@ function makeProduct(id, farmerIdx, name, catId, catSlug, catName, price, unit, 
 const PRODUCTS = [
   makeProduct('p1', 0, 'Desi Tomato', 'c1', 'vegetables', 'Vegetables', 28, 'kg', 120, 'Organic', 'images/tomato-pile.jpg', 2, 210, 4.7, 32),
   makeProduct('p2', 1, 'Spinach (Palak)', 'c1', 'vegetables', 'Vegetables', 18, 'bunch', 200, 'Organic', 'images/spinach-leaves.jpg', 1, 180, 4.6, 25),
-  makeProduct('p3', 2, 'Alphonso Mango', 'c2', 'fruits', 'Fruits', 180, 'kg', 80, 'Conventional', 'images/tomato-pile.jpg', 3, 95, 4.8, 40),
-  makeProduct('p4', 4, 'A2 Desi Cow Milk', 'c3', 'dairy-products', 'Dairy Products', 65, 'litre', 60, 'Organic', 'images/spinach-leaves.jpg', 0, 320, 4.9, 55),
-  makeProduct('p5', 0, 'Ragi (Finger Millet)', 'c4', 'grains-pulses', 'Grains & Pulses', 52, 'kg', 500, 'Natural / ZBNF', '', 12, 140, 4.5, 18),
-  makeProduct('p6', 3, 'Banana (Yelakki)', 'c2', 'fruits', 'Fruits', 45, 'dozen', 150, 'Organic', 'images/green-beans.jpg', 2, 160, 4.4, 20),
-  makeProduct('p7', 4, 'Country Eggs', 'c3', 'dairy-products', 'Dairy Products', 90, 'dozen', 90, 'Organic', '', 0, 275, 4.8, 44),
-  makeProduct('p8', 0, 'Sona Masoori Rice', 'c4', 'grains-pulses', 'Grains & Pulses', 68, 'kg', 400, 'Organic', '', 20, 190, 4.6, 22),
+  makeProduct('p3', 2, 'Alphonso Mango', 'c2', 'fruits', 'Fruits', 180, 'kg', 80, 'Conventional', 'images/mango.jpg', 3, 95, 4.8, 40),
+  makeProduct('p4', 4, 'A2 Desi Cow Milk', 'c3', 'dairy-products', 'Dairy Products', 65, 'litre', 60, 'Organic', 'images/milk.jpg', 0, 320, 4.9, 55),
+  makeProduct('p5', 0, 'Ragi (Finger Millet)', 'c4', 'grains-pulses', 'Grains & Pulses', 52, 'kg', 500, 'Natural / ZBNF', 'images/ragi-grain.jpg', 12, 140, 4.5, 18),
+  makeProduct('p6', 3, 'Banana (Yelakki)', 'c2', 'fruits', 'Fruits', 45, 'dozen', 150, 'Organic', 'images/banana.jpg', 2, 160, 4.4, 20),
+  makeProduct('p7', 4, 'Country Eggs', 'c3', 'dairy-products', 'Dairy Products', 90, 'dozen', 90, 'Organic', 'images/country-eggs.jpg', 0, 275, 4.8, 44),
+  makeProduct('p8', 0, 'Sona Masoori Rice', 'c4', 'grains-pulses', 'Grains & Pulses', 68, 'kg', 400, 'Organic', 'images/rice-bowl.jpg', 20, 190, 4.6, 22),
   makeProduct('p9', 1, 'Red Onion (Rose)', 'c1', 'vegetables', 'Vegetables', 32, 'kg', 300, 'Organic', 'images/onions-pile.jpg', 4, 240, 4.5, 28),
   makeProduct('p10', 1, 'Potato (Jyoti)', 'c1', 'vegetables', 'Vegetables', 26, 'kg', 4, 'Natural / ZBNF', 'images/potatoes-closeup.jpg', 6, 85, 4.3, 11),
   makeProduct('p11', 3, 'Ooty Carrot', 'c1', 'vegetables', 'Vegetables', 48, 'kg', 150, 'Organic', 'images/carrots-market.jpg', 1, 175, 4.7, 30),
   makeProduct('p12', 4, 'Green Beans', 'c1', 'vegetables', 'Vegetables', 56, 'kg', 100, 'Organic', 'images/green-beans.jpg', 1, 130, 4.6, 19),
-  makeProduct('p13', 0, 'Brinjal (Violet Long)', 'c1', 'vegetables', 'Vegetables', 38, 'kg', 180, 'Organic', 'images/brinjal.jpg', 2, 110, 4.4, 16),
-  makeProduct('p14', 1, 'Curry Leaves', 'c6', 'herbs-other-produce', 'Herbs & Other Produce', 10, 'bunch', 300, 'Organic', 'images/spinach-leaves.jpg', 1, 95, 4.5, 9),
-  makeProduct('p15', 2, 'Papaya (Red)', 'c2', 'fruits', 'Fruits', 40, 'kg', 0, 'Conventional', 'images/brinjal.jpg', 3, 60, 4.2, 8),
-  makeProduct('p16', 0, 'Organic Ragi Flour', 'c5', 'organic-products', 'Organic Products', 78, 'kg', 200, 'Organic', 'images/potatoes-closeup.jpg', 15, 120, 4.7, 16),
-  makeProduct('p17', 1, 'Organic Spinach Seeds Pack', 'c5', 'organic-products', 'Organic Products', 95, 'pack', 150, 'Organic', 'images/spinach-leaves.jpg', 30, 80, 4.8, 12),
-  makeProduct('p18', 4, 'Organic A2 Ghee', 'c5', 'organic-products', 'Organic Products', 850, '500ml', 50, 'Organic', 'images/spinach-leaves.jpg', 5, 165, 4.9, 28),
-  makeProduct('p19', 3, 'Organic Mango Jam', 'c5', 'organic-products', 'Organic Products', 145, 'jar', 80, 'Organic', 'images/tomato-pile.jpg', 10, 90, 4.6, 14),
+  makeProduct('p13', 0, 'Brinjal (Violet Long)', 'c1', 'vegetables', 'Vegetables', 38, 'kg', 180, 'Organic', 'images/brinjal-long.jpg', 2, 110, 4.4, 16),
+  makeProduct('p14', 1, 'Curry Leaves', 'c6', 'herbs-other-produce', 'Herbs & Other Produce', 10, 'bunch', 300, 'Organic', 'images/curry-leaves.jpg', 1, 95, 4.5, 9),
+  makeProduct('p15', 2, 'Papaya (Red)', 'c2', 'fruits', 'Fruits', 40, 'kg', 0, 'Conventional', 'images/papaya.jpg', 3, 60, 4.2, 8),
+  makeProduct('p16', 0, 'Organic Ragi Flour', 'c5', 'organic-products', 'Organic Products', 78, 'kg', 200, 'Organic', 'images/organic-ragi-flour.jpg', 15, 120, 4.7, 16),
+  makeProduct('p17', 1, 'Organic Spinach Seeds Pack', 'c5', 'organic-products', 'Organic Products', 95, 'pack', 150, 'Organic', 'images/spinach-seeds.jpg', 30, 80, 4.8, 12),
+  makeProduct('p18', 4, 'Organic A2 Ghee', 'c5', 'organic-products', 'Organic Products', 850, '500ml', 50, 'Organic', 'images/ghee-bowl.jpg', 5, 165, 4.9, 28),
+  makeProduct('p19', 3, 'Organic Mango Jam', 'c5', 'organic-products', 'Organic Products', 145, 'jar', 80, 'Organic', 'images/mango-jam.jpg', 10, 90, 4.6, 14),
 ];
 
 const REVIEWS = [
