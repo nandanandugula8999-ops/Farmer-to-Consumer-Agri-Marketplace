@@ -99,6 +99,20 @@ const PRODUCTS = [
   makeProduct('p19', 3, 'Organic Mango Jam', 'c5', 'organic-products', 'Organic Products', 145, 'jar', 80, 'Organic', 'images/mango-jam.jpg', 10, 90, 4.6, 14),
 ];
 
+// Extra photos for the product detail gallery (first entry stays the card image).
+const PRODUCT_GALLERIES = {
+  p1: ['images/tomato-pile.jpg', 'images/produce-flatlay.jpg', 'images/produce-aisle.jpg'],
+  p6: ['images/banana.jpg', 'images/bananas-flatlay.jpg'],
+  p8: ['images/rice-bowl.jpg', 'images/rice-closeup.jpg'],
+  p11: ['images/carrots-market.jpg', 'images/carrots-bunch.jpg'],
+  p13: ['images/brinjal-long.jpg', 'images/brinjal.jpg'],
+};
+
+PRODUCTS.forEach((p) => {
+  const extra = PRODUCT_GALLERIES[p._id];
+  if (extra) p.images = extra.slice();
+});
+
 const REVIEWS = [
   { _id: 'r1', productId: 'p1', rating: 5, comment: 'Tomatoes tasted like the ones from my grandmother’s garden. Will order again!', customerName: 'Priya S.', verifiedPurchase: true, createdAt: daysAgo(5) },
   { _id: 'r2', productId: 'p1', rating: 4, comment: 'Very fresh and firm. Slightly smaller than expected but flavour was excellent.', customerName: 'Arun K.', verifiedPurchase: true, createdAt: daysAgo(9) },
@@ -178,23 +192,23 @@ function queryProducts(q, pageSize) {
 function queryFarmers(filters, pageSize) {
   pageSize = pageSize || 9;
   let items = FARMERS.slice();
-  if (filters.q) {
-    const s = filters.q.toLowerCase();
+  if (filters.q && String(filters.q).trim()) {
+    const s = String(filters.q).trim().toLowerCase();
     items = items.filter((f) =>
       f.farmName.toLowerCase().includes(s) ||
       f.farmDescription.toLowerCase().includes(s) ||
       f.cropTypes.some((c) => c.toLowerCase().includes(s))
     );
   }
-  if (filters.location) {
-    const s = filters.location.toLowerCase();
+  if (filters.location && String(filters.location).trim()) {
+    const s = String(filters.location).trim().toLowerCase();
     items = items.filter((f) => f.district.toLowerCase().includes(s));
   }
   if (filters.method) items = items.filter((f) => f.farmingMethod === filters.method);
 
   const total = items.length;
   const pages = Math.max(1, Math.ceil(total / pageSize));
-  const page = Math.min(Math.max(1, filters.page || 1), pages);
+  const page = Math.min(Math.max(1, Number(filters.page) || 1), pages);
   const start = (page - 1) * pageSize;
   return { items: items.slice(start, start + pageSize), total, page, pages };
 }
