@@ -347,7 +347,8 @@ textarea.input { min-height: 120px; resize: vertical; }
 .qty-sm button { width: 30px; height: 30px; font-size: 1rem; }
 .qty-sm .qty-value { width: auto; min-width: 28px; }
 .link-btn {
-  border: none; background: none; padding: 0;
+  display: inline-flex; align-items: center; min-height: 24px; padding: 0;
+  border: none; background: none;
   color: var(--red); font-size: 0.78rem; font-weight: 600; text-decoration: underline;
 }
 .cart-line-total { font-weight: 800; color: var(--forest); white-space: nowrap; }
@@ -458,6 +459,7 @@ textarea.input { min-height: 120px; resize: vertical; }
 .data-table .num { text-align: right; white-space: nowrap; }
 .data-table-pm { min-width: 660px; }
 .data-table .link { font-weight: 700; }
+.data-table a { display: inline-flex; align-items: center; min-height: 24px; }
 
 .pm-product { display: flex; align-items: center; gap: 0.65rem; min-width: 12rem; }
 .pm-thumb {
