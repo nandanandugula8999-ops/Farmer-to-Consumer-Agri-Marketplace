@@ -51,12 +51,21 @@ function emptyProductState() { return { custom: [], overrides: {}, deleted: [] }
 
 function readProductState() {
   const state = storeRead(FARMER_PRODUCTS_KEY, null);
-  if (!state || typeof state !== 'object') return emptyProductState();
-  return {
-    custom: Array.isArray(state.custom) ? state.custom : [],
-    overrides: state.overrides && typeof state.overrides === 'object' ? state.overrides : {},
-    deleted: Array.isArray(state.deleted) ? state.deleted : [],
-  };
+  if (!state || typeof state !== 'object' || Array.isArray(state)) return emptyProductState();
+  const custom = Array.isArray(state.custom)
+    ? state.custom.filter(function (p) { return p && typeof p === 'object' && p._id && p.name; })
+    : [];
+  const overrides = {};
+  if (state.overrides && typeof state.overrides === 'object' && !Array.isArray(state.overrides)) {
+    Object.keys(state.overrides).forEach(function (id) {
+      const value = state.overrides[id];
+      if (value && typeof value === 'object' && !Array.isArray(value)) overrides[id] = value;
+    });
+  }
+  const deleted = Array.isArray(state.deleted)
+    ? state.deleted.filter(function (id) { return typeof id === 'string'; })
+    : [];
+  return { custom: custom.map(cloneData), overrides: overrides, deleted: deleted };
 }
 
 let farmerProductState = readProductState();
@@ -97,8 +106,34 @@ function persistProductRecord(product) {
 
 /* ---------------- farmer account ---------------- */
 
-let farmerAccount = storeRead(FARMER_ACCOUNT_KEY, null);
-if (farmerAccount && !farmerAccount.id) farmerAccount = null;
+// Reject corrupted or partial accounts instead of letting them break pages.
+function sanitizeFarmerAccount(raw) {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw) || !raw.id) return null;
+  const str = function (value, fallback) {
+    return typeof value === 'string' ? value : (fallback || '');
+  };
+  const method = ['Organic', 'Natural / ZBNF', 'Conventional'].indexOf(raw.farmingMethod) >= 0
+    ? raw.farmingMethod : 'Organic';
+  return {
+    id: String(raw.id),
+    farmerName: str(raw.farmerName, 'Farmer'),
+    phone: str(raw.phone),
+    email: str(raw.email),
+    farmName: str(raw.farmName, 'My farm'),
+    village: str(raw.village),
+    district: str(raw.district),
+    state: str(raw.state, 'Karnataka'),
+    farmDescription: str(raw.farmDescription),
+    categories: Array.isArray(raw.categories) ? raw.categories.filter(function (c) { return typeof c === 'string'; }) : [],
+    farmingMethod: method,
+    approvalStatus: APPROVAL_LABELS[raw.approvalStatus] ? raw.approvalStatus : 'pending',
+    farmImage: str(raw.farmImage),
+    registeredAt: str(raw.registeredAt, new Date().toISOString()),
+    updatedAt: str(raw.updatedAt),
+  };
+}
+
+let farmerAccount = sanitizeFarmerAccount(storeRead(FARMER_ACCOUNT_KEY, null));
 
 function currentFarmer() { return farmerAccount; }
 
@@ -120,7 +155,7 @@ function farmerProfileFromAccount(account) {
     village: account.village || '',
     district: account.district || '',
     state: account.state || 'Karnataka',
-    cropTypes: account.categories || [],
+    cropTypes: Array.isArray(account.categories) ? account.categories : [],
     farmingMethod: account.farmingMethod || 'Organic',
     farmImage: account.farmImage || categoryImageFor(account.categories),
     ratingAvg: 0,
@@ -139,8 +174,8 @@ function syncFarmerDirectory() {
     const ratingCount = existing.ratingCount;
     const farmImage = existing.farmImage;
     Object.assign(existing, profile);
-    existing.ratingAvg = ratingAvg;
-    existing.ratingCount = ratingCount;
+    existing.ratingAvg = typeof ratingAvg === 'number' ? ratingAvg : 0;
+    existing.ratingCount = typeof ratingCount === 'number' ? ratingCount : 0;
     if (!profile.farmImage) existing.farmImage = farmImage;
   } else {
     FARMERS.push(profile);
@@ -159,11 +194,13 @@ function syncFarmerProductsFromAccount(account) {
 }
 
 function saveFarmerAccount(account) {
-  farmerAccount = account;
-  storeWrite(FARMER_ACCOUNT_KEY, account);
+  const clean = sanitizeFarmerAccount(account);
+  if (!clean) return null;
+  farmerAccount = clean;
+  storeWrite(FARMER_ACCOUNT_KEY, clean);
   syncFarmerDirectory();
-  syncFarmerProductsFromAccount(account);
-  return account;
+  syncFarmerProductsFromAccount(clean);
+  return clean;
 }
 
 function clearFarmerAccount() {
@@ -220,6 +257,9 @@ function saveFarmerProduct(data, existingId) {
 
   const category = CATEGORIES.find(function (c) { return c._id === data.categoryId; }) || CATEGORIES[0];
   const now = new Date().toISOString();
+  const name = String(data.name || '').trim();
+  const price = Number(data.price);
+  if (!name || !isFinite(price) || price < 0) return null;
   const images = (data.images && data.images.length)
     ? data.images.slice(0, 3)
     : (category.image ? [category.image] : []);
@@ -229,14 +269,14 @@ function saveFarmerProduct(data, existingId) {
     : (data.availabilityStatus === 'out_of_stock' ? 'out_of_stock' : 'in_stock');
 
   const fields = {
-    name: String(data.name || '').trim(),
+    name: name,
     description: String(data.description || '').trim(),
     categoryId: category._id,
     categorySlug: category.slug,
     categoryName: category.name,
     images: images,
-    price: Math.max(0, Number(data.price) || 0),
-    unit: data.unit || 'kg',
+    price: price,
+    unit: String(data.unit || 'kg').trim() || 'kg',
     stockQuantity: stockQuantity,
     availabilityStatus: availabilityStatus,
     farmingMethod: data.farmingMethod || 'Organic',
@@ -272,6 +312,8 @@ function setProductAvailability(id, status) {
   if (!farmerAccount) return null;
   const product = findProduct(id);
   if (!product || product.farmerProfileId !== farmerAccount.id) return null;
+  // A product with no stock cannot be marked available.
+  if (status !== 'out_of_stock' && !(Number(product.stockQuantity) > 0)) return null;
   product.availabilityStatus = status === 'out_of_stock' ? 'out_of_stock' : 'in_stock';
   persistProductRecord(product);
   return product;
@@ -365,10 +407,71 @@ function seedDemoOrders() {
   return seeded;
 }
 
+function normalizeOrder(raw) {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw) || !raw.id) return null;
+  const items = (Array.isArray(raw.items) ? raw.items : [])
+    .filter(function (i) {
+      return i && typeof i === 'object' && i.productId && i.farmerId && isFinite(Number(i.price)) && Number(i.price) >= 0;
+    })
+    .map(function (i) {
+      return {
+        productId: String(i.productId),
+        name: String(i.name || 'Product'),
+        farmerId: String(i.farmerId),
+        farmerName: String(i.farmerName || ''),
+        price: Number(i.price),
+        qty: Math.max(1, Math.floor(Number(i.qty) || 1)),
+        unit: String(i.unit || ''),
+      };
+    });
+  if (!items.length) return null;
+
+  const subtotal = items.reduce(function (n, i) { return n + i.price * i.qty; }, 0);
+  const rawDelivery = Number(raw.delivery);
+  const delivery = isFinite(rawDelivery) && rawDelivery >= 0 ? rawDelivery : (subtotal >= 499 ? 0 : 39);
+  const placedAt = raw.placedAt && !isNaN(new Date(raw.placedAt).getTime())
+    ? new Date(raw.placedAt).toISOString()
+    : new Date().toISOString();
+  const status = ORDER_STATUSES.indexOf(raw.status) >= 0 ? raw.status : 'placed';
+  const history = (Array.isArray(raw.statusHistory) ? raw.statusHistory : [])
+    .filter(function (h) { return h && ORDER_STATUSES.indexOf(h.status) >= 0; })
+    .map(function (h) {
+      return {
+        status: h.status,
+        at: h.at && !isNaN(new Date(h.at).getTime()) ? new Date(h.at).toISOString() : placedAt,
+      };
+    });
+  if (!history.length) history.push({ status: status, at: placedAt });
+
+  const c = raw.customer && typeof raw.customer === 'object' ? raw.customer : {};
+  return {
+    id: String(raw.id),
+    placedAt: placedAt,
+    customer: {
+      name: String(c.name || 'Customer'),
+      phone: String(c.phone || ''),
+      address: String(c.address || ''),
+      city: String(c.city || ''),
+      pincode: String(c.pincode || ''),
+    },
+    payment: raw.payment === 'upi' ? 'upi' : 'cod',
+    status: status,
+    items: items,
+    subtotal: subtotal,
+    delivery: delivery,
+    total: subtotal + delivery,
+    demo: raw.demo === true,
+    statusHistory: history,
+  };
+}
+
 function initOrders() {
   const stored = storeRead(FARMER_ORDERS_KEY, null);
   if (Array.isArray(stored)) {
-    farmOrders = stored;
+    const normalized = stored.map(normalizeOrder).filter(Boolean);
+    // If a non-empty store was entirely corrupted, restore the demo orders instead of crashing.
+    farmOrders = (stored.length && !normalized.length) ? seedDemoOrders() : normalized;
+    storeWrite(FARMER_ORDERS_KEY, farmOrders);
     return;
   }
   farmOrders = seedDemoOrders();
@@ -386,7 +489,9 @@ function orderItemsFor(order, farmerId) {
 }
 
 function orderTotalFor(order, farmerId) {
-  return orderItemsFor(order, farmerId).reduce(function (n, i) { return n + i.price * i.qty; }, 0);
+  return orderItemsFor(order, farmerId).reduce(function (n, i) {
+    return n + (Number(i.price) || 0) * (Number(i.qty) || 0);
+  }, 0);
 }
 
 function farmerDashboardStats(farmerId) {
@@ -411,24 +516,51 @@ function farmerDashboardStats(farmerId) {
 }
 
 function createOrder(payload) {
-  const subtotal = Number(payload.subtotal) || 0;
-  const delivery = Number(payload.delivery) || 0;
+  const items = (payload && Array.isArray(payload.items) ? payload.items : [])
+    .filter(function (i) { return i && i.productId && i.farmerId && isFinite(Number(i.price)); })
+    .map(function (i) {
+      return {
+        productId: String(i.productId),
+        name: String(i.name || 'Product'),
+        farmerId: String(i.farmerId),
+        farmerName: String(i.farmerName || ''),
+        price: Math.max(0, Number(i.price) || 0),
+        qty: Math.max(1, Math.floor(Number(i.qty) || 1)),
+        unit: String(i.unit || ''),
+      };
+    });
+  if (!items.length) return null;
+
+  const subtotal = items.reduce(function (n, i) { return n + i.price * i.qty; }, 0);
+  const delivery = Math.max(0, Number(payload.delivery) || 0);
+  const at = new Date().toISOString();
   const order = {
-    id: payload.id,
-    placedAt: new Date().toISOString(),
+    id: payload.id || ('KM' + String(Date.now()).slice(-8)),
+    placedAt: at,
     customer: cloneData(payload.customer || {}),
-    payment: payload.payment || 'cod',
+    payment: payload.payment === 'upi' ? 'upi' : 'cod',
     status: 'placed',
-    items: cloneData(payload.items || []),
+    items: items,
     subtotal: subtotal,
     delivery: delivery,
-    total: Number(payload.total) || subtotal + delivery,
+    total: subtotal + delivery,
     demo: false,
-    statusHistory: [{ status: 'placed', at: new Date().toISOString() }],
+    statusHistory: [{ status: 'placed', at: at }],
   };
   farmOrders.push(order);
-  storeWrite(FARMER_ORDERS_KEY, farmOrders);
-  return order;
+  const persisted = storeWrite(FARMER_ORDERS_KEY, farmOrders);
+
+  // Decrement stock for the purchased quantities so the demo cannot oversell.
+  items.forEach(function (item) {
+    const product = findProduct(item.productId);
+    if (!product) return;
+    const stock = Math.max(0, Math.floor(Number(product.stockQuantity) || 0));
+    product.stockQuantity = Math.max(0, stock - item.qty);
+    if (product.stockQuantity === 0) product.availabilityStatus = 'out_of_stock';
+    persistProductRecord(product);
+  });
+
+  return { order: order, persisted: persisted };
 }
 
 function updateOrderStatus(orderId, status) {
