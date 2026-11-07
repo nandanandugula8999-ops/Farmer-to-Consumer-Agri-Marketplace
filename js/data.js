@@ -130,6 +130,9 @@ const REVIEWS = [
 
 // ---- helpers ----
 
+// Every seeded review is illustrative demo data, not a real purchase.
+REVIEWS.forEach(function (r) { r.demo = true; });
+
 function findProduct(id) { return PRODUCTS.find((p) => p._id === id); }
 function findFarmer(id) { return FARMERS.find((f) => f.id === id); }
 function reviewsFor(id) { return REVIEWS.filter((r) => r.productId === id); }
@@ -139,8 +142,11 @@ function relatedProducts(id, limit) {
   limit = limit || 4;
   const p = findProduct(id);
   if (!p) return [];
-  const same = PRODUCTS.filter((x) => x._id !== id && x.categoryId === p.categoryId);
-  const others = PRODUCTS.filter((x) => x._id !== id && x.categoryId !== p.categoryId);
+  const inStock = (x) => x.stockQuantity > 0 && x.availabilityStatus !== 'out_of_stock';
+  const same = PRODUCTS.filter((x) => x._id !== id && x.categoryId === p.categoryId)
+    .sort((a, b) => (inStock(b) - inStock(a)) || (b.ratingAvg - a.ratingAvg));
+  const others = PRODUCTS.filter((x) => x._id !== id && x.categoryId !== p.categoryId)
+    .sort((a, b) => (inStock(b) - inStock(a)) || (b.ratingAvg - a.ratingAvg));
   return same.concat(others).slice(0, limit);
 }
 
@@ -164,27 +170,30 @@ function queryProducts(q, pageSize) {
     items = items.filter((p) => p.origin && p.origin.toLowerCase().includes(s));
   }
   if (q.method && String(q.method).trim()) items = items.filter((p) => p.farmingMethod === q.method);
-  if (q.availability === 'in_stock') items = items.filter((p) => p.availabilityStatus === 'in_stock');
-  if (q.priceMin !== '' && q.priceMin != null) {
-    const v = Number(q.priceMin);
-    if (!isNaN(v)) items = items.filter((p) => p.price >= v);
-  }
-  if (q.priceMax !== '' && q.priceMax != null) {
-    const v = Number(q.priceMax);
-    if (!isNaN(v)) items = items.filter((p) => p.price <= v);
+  if (q.availability === 'in_stock') items = items.filter((p) => p.stockQuantity > 0 && p.availabilityStatus !== 'out_of_stock');
+  if (q.availability === 'out_of_stock') items = items.filter((p) => p.stockQuantity <= 0 || p.availabilityStatus === 'out_of_stock');
+  const min = Number(q.priceMin);
+  const max = Number(q.priceMax);
+  const hasMin = q.priceMin !== '' && q.priceMin != null && isFinite(min) && min >= 0;
+  const hasMax = q.priceMax !== '' && q.priceMax != null && isFinite(max) && max >= 0;
+  if (hasMin && hasMax && min > max) {
+    items = items.filter((p) => p.price >= max && p.price <= min);
+  } else {
+    if (hasMin) items = items.filter((p) => p.price >= min);
+    if (hasMax) items = items.filter((p) => p.price <= max);
   }
 
   switch (q.sort) {
-    case 'price_asc': items.sort((a, b) => a.price - b.price); break;
-    case 'price_desc': items.sort((a, b) => b.price - a.price); break;
-    case 'popular': items.sort((a, b) => b.soldCount - a.soldCount); break;
-    case 'rating': items.sort((a, b) => b.ratingAvg - a.ratingAvg); break;
+    case 'price_asc': items.sort((a, b) => (a.price - b.price) || a.name.localeCompare(b.name)); break;
+    case 'price_desc': items.sort((a, b) => (b.price - a.price) || a.name.localeCompare(b.name)); break;
+    case 'popular': items.sort((a, b) => (b.soldCount - a.soldCount) || (b.ratingAvg - a.ratingAvg)); break;
+    case 'rating': items.sort((a, b) => (b.ratingAvg - a.ratingAvg) || (b.ratingCount - a.ratingCount)); break;
     default: items.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   }
 
   const total = items.length;
   const pages = Math.max(1, Math.ceil(total / pageSize));
-  const page = Math.min(Math.max(1, Number(q.page) || 1), pages);
+  const page = Math.min(Math.max(1, Math.floor(Number(q.page)) || 1), pages);
   const start = (page - 1) * pageSize;
   return { items: items.slice(start, start + pageSize), total, page, pages };
 }
@@ -195,20 +204,31 @@ function queryFarmers(filters, pageSize) {
   if (filters.q && String(filters.q).trim()) {
     const s = String(filters.q).trim().toLowerCase();
     items = items.filter((f) =>
-      f.farmName.toLowerCase().includes(s) ||
-      f.farmDescription.toLowerCase().includes(s) ||
-      f.cropTypes.some((c) => c.toLowerCase().includes(s))
+      (f.farmName && f.farmName.toLowerCase().includes(s)) ||
+      (f.farmerName && f.farmerName.toLowerCase().includes(s)) ||
+      (f.farmDescription && f.farmDescription.toLowerCase().includes(s)) ||
+      (f.village && f.village.toLowerCase().includes(s)) ||
+      (f.district && f.district.toLowerCase().includes(s)) ||
+      (Array.isArray(f.cropTypes) && f.cropTypes.some((c) => c.toLowerCase().includes(s)))
     );
   }
   if (filters.location && String(filters.location).trim()) {
     const s = String(filters.location).trim().toLowerCase();
-    items = items.filter((f) => f.district.toLowerCase().includes(s));
+    items = items.filter((f) =>
+      (f.district && f.district.toLowerCase().includes(s)) ||
+      (f.village && f.village.toLowerCase().includes(s)) ||
+      (f.state && f.state.toLowerCase().includes(s))
+    );
   }
   if (filters.method) items = items.filter((f) => f.farmingMethod === filters.method);
 
   const total = items.length;
   const pages = Math.max(1, Math.ceil(total / pageSize));
-  const page = Math.min(Math.max(1, Number(filters.page) || 1), pages);
+  const page = Math.min(Math.max(1, Math.floor(Number(filters.page)) || 1), pages);
   const start = (page - 1) * pageSize;
   return { items: items.slice(start, start + pageSize), total, page, pages };
+}
+
+function farmsWithProductsCount() {
+  return FARMERS.filter((f) => PRODUCTS.some((p) => p.farmerProfileId === f.id)).length;
 }
